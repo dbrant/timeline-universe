@@ -1,0 +1,44 @@
+[
+  {
+    "id": "cat",
+    "categories": ["cat"],
+    "color": "green",
+    "faicon": "cat",
+    "datetime": "2021-01-01 05:00",
+    "title": "Cats are very good",
+    "image": {
+      "link": "http://placekitten.com",
+      "src": "http://placekitten.com/200/300",
+      "alt": "A placeholder kitten",
+      "caption": "Kitten!"
+    },
+    "body": "Foo.",
+    "links": [
+      {
+        "href": "https://en.wikipedia.org/wiki/Cat",
+        "linkText": "Cat"
+      }
+    ]
+  },
+  {
+    "id": "dog",
+    "categories": ["dog"],
+    "color": "green",
+    "faicon": "dog",
+    "datetime": "2021-05-01 23:55",
+    "title": "Puppies are great too",
+    "image": {
+      "link": "http://place-puppy.com",
+      "src": "https://place-puppy.com/300x300",
+      "alt": "A placeholder puppy",
+      "caption": "Puppy!"
+    },
+    "body": "Bar.",
+    "links": [
+      {
+        "href": "https://en.wikipedia.org/wiki/Dog",
+        "linkText": "Dog"
+      }
+    ]
+  }
+]
