@@ -1,22 +1,13 @@
 
-
-const https = require('https');
 const domino = require('domino');
+const fs = require('fs');
+const axios = require('axios');
 
 
-function loadRemoteURL(url, callback) {
-  https.get(url, function(response) {
-    let data = '';
-    response.on('data', function(chunk) {
-      data += chunk;
-    });
-    response.on('end', function() {
-      callback(data);
-    });
-  });
-}
+async function getItems() {
+  let data = (await axios.get('https://en.wikipedia.org/api/rest_v1/page/html/Timeline_of_the_far_future')).data;
+  console.log(data);
 
-loadRemoteURL('https://en.wikipedia.org/api/rest_v1/page/html/Timeline_of_the_far_future', function(data) {
   // create a virtual window object
   let window = domino.createWindow(data);
   let document = window.document;
@@ -52,6 +43,8 @@ loadRemoteURL('https://en.wikipedia.org/api/rest_v1/page/html/Timeline_of_the_fa
 
 
       let yearCol = columns[1];
+      let bodyCol = columns[2];
+
       let supTags = yearCol.querySelectorAll('sup');
       for (let l = 0; l < supTags.length; l++) {
         // remove it if it contains a class of "reference"
@@ -60,13 +53,35 @@ loadRemoteURL('https://en.wikipedia.org/api/rest_v1/page/html/Timeline_of_the_fa
         }
       }
 
-      let futureYear = yearCol.textContent.trim();
-
+      let futureYear = yearCol.innerHTML;
       console.log(futureYear);
-      //items.push(futureYear);
+
+      let item = {};
+      item.id = items.length + 1;
+      item.categories = ['cat'];
+      item.color = 'red';
+      item.faicon = 'cat';
+      item.datetime = items.length;
+      item.title = futureYear;
+      item.body = columns[2].innerHTML;
+
+      let links = bodyCol.querySelectorAll('a');
+      let linkArr = [];
+      for (let k = 0; k < links.length; k++) {
+        let link = {};
+        link.href = links[k].href;
+        link.linkText = links[k].title || links[k].textContent;
+        linkArr.push(link);
+      }
+      item.links = linkArr;
+
+      items.push(item);
     }
   }
 
-});
+  // output the list of items to a file.
+  fs.writeFileSync('./src/_data/items.json', JSON.stringify(items), 'utf8');
+}
 
 
+getItems();
