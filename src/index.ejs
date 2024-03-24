@@ -40,10 +40,7 @@
           data-category="<%= entry.categoriesString %>"
           aria-hidden="false"
         >
-          <div class="timeline-icon" style="background-color: <%- entry.categoryColor || 'grey' %>;" title="<%= entry.faicon %>">
-            <% if (entry.faicon) { %>
-            <i class="fas fa-<%= entry.faicon %>" aria-hidden="true"></i>
-            <% } %>
+          <div class="timeline-icon" style="background-color: <%- entry.categoryColor || 'grey' %>; background-image: url(<%- entry.categoryImg %>)" title="<%= entry.faicon %>">
           </div>
           <div class="timeline-description">
             <h2>

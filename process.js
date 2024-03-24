@@ -3,6 +3,14 @@ const domino = require('domino');
 const fs = require('fs');
 const axios = require('axios');
 
+function urlPngToSvg(url) {
+  if (url.includes('.svg/')) {
+    let parts = url.split('/');
+    return parts.slice(0, -1).join('/').replace('/thumb/', '/');
+  }
+  return url;
+}
+
 
 async function getItems() {
   let data = (await axios.get('https://en.wikipedia.org/api/rest_v1/page/html/Timeline_of_the_far_future')).data;
@@ -64,7 +72,7 @@ async function getItems() {
         }
       }
       if (categoryImg) {
-        item.categoryImg = categoryImg.src;
+        item.categoryImg = 'https://upload.wikimedia.org/' + urlPngToSvg(categoryImg.src);
       }
       item.categoryColor = categoryCol.style.backgroundColor || categoryCol.style.background;
 
@@ -85,7 +93,7 @@ async function getItems() {
 
       item.id = items.length + 1;
       item.color = 'red';
-      item.faicon = 'cat';
+      item.faicon = item.categories[0];
       item.datetime = items.length;
       item.title = futureYear + " years from now";
       
