@@ -47,21 +47,38 @@
               <a id="<%= entry.id %>" href="#<%= entry.id %>"><i class="fas fa-link"></i></a><%-
               entry.title %>
             </h2>
-            <% if (entry.image) { %>
+            <% if (entry.images.length == 1) { %>
             <div class="captioned-image image-right">
-              <% if (entry.image.link) { %><a href="<%= entry.image.link %>"
+              <% if (entry.images[0].link) { %><a href="<%= entry.images[0].link %>"
                 ><% } %>
-                <img src="<%= entry.image.src %>" alt="<%= entry.image.src %>" loading="lazy" />
-                <% if (entry.image.link) { %></a
-              ><% } %> <% if (entry.image.caption) { %>
-              <span class="caption"><%- entry.image.caption %></span>
+                <img src="<%= entry.images[0].src %>" alt="<%= entry.images[0].src %>" loading="lazy" />
+                <% if (entry.images[0].link) { %></a
+              ><% } %> <% if (entry.images[0].caption) { %>
+              <span class="caption"><%- entry.images[0].caption %></span>
               <% } %>
             </div>
-            <% } %> <% if (!utilities.isWrappedInParagraphTags(entry.body)) { %>
+            <% } %>
+            <% if (!utilities.isWrappedInParagraphTags(entry.body)) { %>
             <p>
               <% } %> <%- entry.body %> <% if (!utilities.isWrappedInParagraphTags(entry.body)) { %>
             </p>
-            <% } %> <% if (entry.links) { %>
+            <% } %>
+            <% if (entry.images.length >= 2) { %>
+              <div class="captioned-images-bottom">
+              <% entry.images.forEach(function(image){ %>
+                <div class="captioned-image-bottom">
+                  <% if (image.link) { %><a href="<%= image.link %>"
+                    ><% } %>
+                    <img src="<%= image.src %>" alt="<%= image.src %>" loading="lazy" />
+                    <% if (image.link) { %></a
+                  ><% } %> <% if (image.caption) { %>
+                  <span class="caption"><%- image.caption %></span>
+                  <% } %>
+                </div>
+              <% }); %>
+              </div>
+            <% } %>
+            <% if (entry.links) { %>
             <ul>
               <% entry.links.forEach(function (link) { %>
               <li>

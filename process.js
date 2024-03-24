@@ -98,14 +98,16 @@ async function getItems() {
       item.title = futureYear + " years from now";
       
 
+      item.body = bodyCol.innerHTML;
+
+
       // build a list of references
       let refs = bodyCol.querySelectorAll('sup');
       for (let r = 0; r < refs.length; r++) {
         // TODO: use refs for links instead?
-        //refs[r].parentNode.removeChild(refs[r]);
+        refs[r].parentNode.removeChild(refs[r]);
       }
 
-      item.body = bodyCol.innerHTML;
 
 
       // build a list of links
@@ -120,19 +122,25 @@ async function getItems() {
       item.links = linkArr;
 
       // build a list of images
-      if (links.length > 0) {
-        let href = links[0].title || links[0].href.replace('/wiki/', '');
+      let imageList = [];
+      for (let k = 0; k < links.length; k++) {
+        let href = links[k].title || links[k].href.replace('/wiki/', '');
         let url = `https://en.wikipedia.org/api/rest_v1/page/summary/${href}`;
    
-        let summary = (await axios.get(url)).data;
-        if (summary.thumbnail) {
-          let image = {};
-          image.src = summary.thumbnail.source;
-          image.link = `https://en.wikipedia.org/wiki/${href}`;
-          image.caption = summary.description;
-          item.image = image;
+        try {
+          let summary = (await axios.get(url)).data;
+          if (summary.thumbnail) {
+            let image = {};
+            image.src = summary.thumbnail.source;
+            image.link = `https://en.wikipedia.org/wiki/${href}`;
+            image.caption = summary.description;
+            imageList.push(image);
+          }
+        } catch (e) {
+          console.error(e);
         }
       }
+      item.images = imageList;
 
 
       items.push(item);
