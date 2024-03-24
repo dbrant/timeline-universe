@@ -41,6 +41,14 @@ async function getItems() {
       }
 
 
+
+      // TODO: remove when ready
+      if (j > 3) {
+        break;
+      }
+
+
+
       let yearCol = columns[1];
       let bodyCol = columns[2];
 
@@ -61,7 +69,7 @@ async function getItems() {
       item.color = 'red';
       item.faicon = 'cat';
       item.datetime = items.length;
-      item.title = futureYear;
+      item.title = futureYear + " years from now";
       
 
       // build a list of references

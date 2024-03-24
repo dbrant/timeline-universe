@@ -46,11 +46,6 @@
             <% } %>
           </div>
           <div class="timeline-description">
-            <span class="timestamp"
-              ><time datetime="<%- entry.datetime || entry.date %>"
-                ><%- utilities.humanizeDate(entry.datetime, entry.date) %></time
-              ></span
-            >
             <h2>
               <a id="<%= entry.id %>" href="#<%= entry.id %>"><i class="fas fa-link"></i></a><%-
               entry.title %>
