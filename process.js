@@ -133,7 +133,7 @@ async function getItems() {
             let image = {};
             image.src = summary.thumbnail.source;
             image.link = `https://en.wikipedia.org/wiki/${href}`;
-            image.caption = summary.description;
+            image.caption = '<b>' + summary.displaytitle + '</b>: ' + summary.description;
             imageList.push(image);
           }
         } catch (e) {
