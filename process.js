@@ -43,14 +43,28 @@ async function getItems() {
 
 
       // TODO: remove when ready
-      if (j > 3) {
-        break;
+      if (j > 10) {
+        //break;
       }
 
+      let item = {};
 
 
+      let categoryCol = columns[0];
       let yearCol = columns[1];
       let bodyCol = columns[2];
+
+
+      item.categories = [];
+      let categoryLink = categoryCol.querySelector('a');
+      if (categoryLink) {
+        if (categoryLink.title) {
+          item.categories.push(categoryLink.title);
+        }
+      }
+      if (item.categories.length < 1) {
+        item.categories.push('Unknown');
+      }
 
       let supTags = yearCol.querySelectorAll('sup');
       for (let l = 0; l < supTags.length; l++) {
@@ -63,9 +77,7 @@ async function getItems() {
       let futureYear = yearCol.innerHTML;
       console.log(futureYear);
 
-      let item = {};
       item.id = items.length + 1;
-      item.categories = ['cat'];
       item.color = 'red';
       item.faicon = 'cat';
       item.datetime = items.length;
