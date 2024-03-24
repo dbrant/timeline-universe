@@ -44,7 +44,7 @@ async function getItems() {
 
       // TODO: remove when ready
       if (j > 10) {
-        //break;
+        break;
       }
 
       let item = {};
@@ -57,11 +57,17 @@ async function getItems() {
 
       item.categories = [];
       let categoryLink = categoryCol.querySelector('a');
+      let categoryImg = categoryCol.querySelector('img');
       if (categoryLink) {
         if (categoryLink.title) {
-          item.categories.push(categoryLink.title);
+          item.categories.push(categoryLink.title.trim().toLowerCase());
         }
       }
+      if (categoryImg) {
+        item.categoryImg = categoryImg.src;
+      }
+      item.categoryColor = categoryCol.style.backgroundColor || categoryCol.style.background;
+
       if (item.categories.length < 1) {
         item.categories.push('Unknown');
       }
@@ -88,7 +94,7 @@ async function getItems() {
       let refs = bodyCol.querySelectorAll('sup');
       for (let r = 0; r < refs.length; r++) {
         // TODO: use refs for links instead?
-        refs[r].parentNode.removeChild(refs[r]);
+        //refs[r].parentNode.removeChild(refs[r]);
       }
 
       item.body = bodyCol.innerHTML;

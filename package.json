@@ -7,6 +7,7 @@
     "serve": "npx @11ty/eleventy --serve",
     "build": "npx @11ty/eleventy",
     "prettier": "prettier --write .",
+    "generate": "node process.js && npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
