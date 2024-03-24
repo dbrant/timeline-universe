@@ -6,7 +6,6 @@ const axios = require('axios');
 
 async function getItems() {
   let data = (await axios.get('https://en.wikipedia.org/api/rest_v1/page/html/Timeline_of_the_far_future')).data;
-  console.log(data);
 
   // create a virtual window object
   let window = domino.createWindow(data);
@@ -63,8 +62,19 @@ async function getItems() {
       item.faicon = 'cat';
       item.datetime = items.length;
       item.title = futureYear;
-      item.body = columns[2].innerHTML;
+      
 
+      // build a list of references
+      let refs = bodyCol.querySelectorAll('sup');
+      for (let r = 0; r < refs.length; r++) {
+        // TODO: use refs for links instead?
+        refs[r].parentNode.removeChild(refs[r]);
+      }
+
+      item.body = bodyCol.innerHTML;
+
+
+      // build a list of links
       let links = bodyCol.querySelectorAll('a');
       let linkArr = [];
       for (let k = 0; k < links.length; k++) {
@@ -74,6 +84,22 @@ async function getItems() {
         linkArr.push(link);
       }
       item.links = linkArr;
+
+      // build a list of images
+      if (links.length > 0) {
+        let href = links[0].title || links[0].href.replace('/wiki/', '');
+        let url = `https://en.wikipedia.org/api/rest_v1/page/summary/${href}`;
+   
+        let summary = (await axios.get(url)).data;
+        if (summary.thumbnail) {
+          let image = {};
+          image.src = summary.thumbnail.source;
+          image.link = `https://en.wikipedia.org/wiki/${href}`;
+          image.caption = summary.description;
+          item.image = image;
+        }
+      }
+
 
       items.push(item);
     }
