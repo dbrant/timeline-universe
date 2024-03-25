@@ -52,7 +52,7 @@ async function getItems() {
 
       // TODO: remove when ready
       if (j > 10) {
-        break;
+        //break;
       }
 
       let item = {};
@@ -121,11 +121,30 @@ async function getItems() {
       }
       item.links = linkArr;
 
+      // remove duplicate links
+      let uniqueLinks = [];
+      for (let k = 0; k < linkArr.length; k++) {
+        let found = false;
+        for (let l = 0; l < uniqueLinks.length; l++) {
+          if (uniqueLinks[l].linkText === linkArr[k].linkText) {
+            found = true;
+            break;
+          }
+        }
+        if (!found) {
+          uniqueLinks.push(linkArr[k]);
+        }
+      }
+
       // build a list of images
       let imageList = [];
       for (let k = 0; k < links.length; k++) {
         let href = links[k].title || links[k].href.replace('/wiki/', '');
         let url = `https://en.wikipedia.org/api/rest_v1/page/summary/${href}`;
+
+        if (links[k].textContent.trim().startsWith('[')) {
+          continue;
+        }
    
         try {
           let summary = (await axios.get(url)).data;
@@ -133,8 +152,19 @@ async function getItems() {
             let image = {};
             image.src = summary.thumbnail.source;
             image.link = `https://en.wikipedia.org/wiki/${href}`;
-            image.caption = '<b>' + summary.displaytitle + '</b>: ' + summary.description;
-            imageList.push(image);
+            image.caption = '<b>' + summary.displaytitle + '</b>: <em>' + summary.description + '</em>';
+
+            // does this image already exist in the list?
+            let found = false;
+            for (let l = 0; l < imageList.length; l++) {
+              if (imageList[l].src === image.src) {
+                found = true;
+                break;
+              }
+            }
+            if (!found) {
+              imageList.push(image);
+            }
           }
         } catch (e) {
           console.error(e);
