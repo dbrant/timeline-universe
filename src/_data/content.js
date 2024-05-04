@@ -1,11 +1,11 @@
 
 const entries = require('./items.json');
 
-const header = 'Timeline of the far future.';
+const header = 'Timeline of the far future';
 const footer = 'A footer goes here.';
 
 // Page details
-const pageTitle = 'Timeline of the far futurer'; // The title of the page that shows in the browser tab
+const pageTitle = 'Timeline of the far future'; // The title of the page that shows in the browser tab
 const pageDescription = 'A super fancy timeline'; // The description of the page for search engines
 const pageAuthor = 'Dmitry Brant'; // Your name
 
