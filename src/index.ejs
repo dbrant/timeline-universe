@@ -7,10 +7,10 @@
     <% if (content.header) { %>
     <header class="page-header">
       <% if (!utilities.isWrappedInParagraphTags(content.header)) { %>
-      <p>
+      <h1>
         <% } %> <%- content.header %> <% if (!utilities.isWrappedInParagraphTags(content.header)) {
         %>
-      </p>
+        </h1>
 
       <p><% } %></p>
     </header>
@@ -34,15 +34,27 @@
         </header>
       </div>
       <article class="timeline">
-        <% content.entries.forEach(function(entry){ %>
+        <%
+        //content.entries.forEach(function(entry){
+          for (var i = 0; i < content.entries.length; i++) {
+            var isDeep = false;
+            var entry = content.entries[i];
+            prevEntry = i > 0 ? content.entries[i - 1] : undefined;
+            nextEntry = i < content.entries.length - 1 ? content.entries[i + 1] : undefined;
+
+            if (prevEntry && prevEntry.images.length > 1 && entry.images.length > 1) {
+              isDeep = true;
+            }
+
+          %>
         <div
-          class="timeline-entry"
+          class="timeline-entry<%= isDeep ? ' deep' : '' %>"
           data-category="<%= entry.categoriesString %>"
           aria-hidden="false"
         >
           <div class="timeline-icon" style="background-color: <%- entry.categoryColor || 'grey' %>; background-image: url(<%- entry.categoryImg %>)" title="<%= entry.faicon %>">
           </div>
-          <div class="timeline-description">
+          <div class="timeline-description <%= entry.body.length < 1000 ? 'description-large' : '' %>">
             <h2>
               <a id="<%= entry.id %>" href="#<%= entry.id %>"><i class="fas fa-link"></i></a><%-
               entry.title %>
@@ -64,7 +76,7 @@
             <% } %>
             <% if (entry.images.length >= 2) { %>
               <div class="captioned-images-bottom">
-              <% entry.images.forEach(function(image){ %>
+              <% entry.images.slice(0, 3).forEach(function(image){ %>
                 <div class="captioned-image-bottom">
                   <% if (image.link) { %><a href="<%= image.link %>" target="_blank"><% } %>
                     <img src="<%= image.src %>" alt="<%= image.src %>" loading="lazy" />
@@ -78,7 +90,9 @@
             <% } %>
           </div>
         </div>
-        <% }); %>
+
+        <% } %>
+
       </article>
     </section>
     <% if (content.footer) { %>

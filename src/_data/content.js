@@ -1,13 +1,13 @@
 
 const entries = require('./items.json');
 
-const header = 'Welcome to this wonderful example timeline.';
+const header = 'Timeline of the far future.';
 const footer = 'A footer goes here.';
 
 // Page details
-const pageTitle = 'Static timeline generator'; // The title of the page that shows in the browser tab
+const pageTitle = 'Timeline of the far futurer'; // The title of the page that shows in the browser tab
 const pageDescription = 'A super fancy timeline'; // The description of the page for search engines
-const pageAuthor = 'Jane Doe'; // Your name
+const pageAuthor = 'Dmitry Brant'; // Your name
 
 // DON'T EDIT BELOW THIS LINE! --------------------------------------------------------------------
 const getFilters = (entries) => {
